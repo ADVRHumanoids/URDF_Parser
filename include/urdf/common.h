@@ -4,6 +4,10 @@
 #include <vector>
 #include <string>
 #include <math.h>
+#include <algorithm>
+#include <cctype>
+#include <locale>
+
 #ifndef M_PI
 #define M_PI 3.141592538
 #endif //M_PI
@@ -113,6 +117,74 @@ namespace urdf {
 		Twist() : linear(Vector3()), angular(Vector3()) {}
 		Twist(const Twist& other) : linear(other.linear), angular(other.angular) {}
 	};
+}
+
+namespace nonboost {
+
+
+inline void split(std::vector<std::string>& tokens,
+           std::string s,
+           std::string delimiter)
+{
+    size_t pos = 0;
+    while ((pos = s.find(delimiter)) != std::string::npos) {
+        tokens.push_back(s.substr(0, pos));
+        s.erase(0, pos + delimiter.length());
+    }
+    tokens.push_back(s);
+}
+
+struct bad_lexical_cast : std::invalid_argument
+{
+    using std::invalid_argument::invalid_argument;
+};
+
+template <typename T>
+inline T lexical_cast(std::string);
+
+template <>
+inline double lexical_cast<double>(std::string str) try
+{
+    double ret = std::stod(str);
+    std::cout << "cast " << str << " -> " << ret << std::endl;
+    return ret;
+}
+catch(std::exception& e)
+{
+    throw bad_lexical_cast(e.what());
+}
+
+namespace algorithm
+{
+    // trim from start (in place)
+    inline void ltrim(std::string &s) {
+        s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+            return !std::isspace(ch);
+        }));
+    }
+
+    // trim from end (in place)
+    inline void rtrim(std::string &s) {
+        s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+            return !std::isspace(ch);
+        }).base(), s.end());
+    }
+
+    // trim from both ends (in place)
+    inline void trim(std::string &s) {
+        std::cout << "trim '" << s << "' -> ";
+        rtrim(s);
+        ltrim(s);
+        std::cout << "'" << s << "'" << std::endl;
+    }
+}
+
+inline std::string is_any_of(std::string s)
+{
+    return s;
+}
+
+
 }
 
 #endif

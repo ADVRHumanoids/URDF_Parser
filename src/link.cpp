@@ -1,8 +1,8 @@
 #include "tinyxml/txml.h"
 #include "urdf/link.h"
 
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
+//#include <boost/algorithm/string.hpp>
+//#include <boost/lexical_cast.hpp>
 
 namespace urdf{
 
@@ -83,8 +83,8 @@ namespace urdf{
 		if (mass_xml != nullptr) {
 			if (mass_xml->Attribute("value") != nullptr) {
 				try {
-					i.mass = boost::lexical_cast<double>(mass_xml->Attribute("value"));
-				} catch (boost::bad_lexical_cast &e) {
+					i.mass = nonboost::lexical_cast<double>(mass_xml->Attribute("value"));
+				} catch (nonboost::bad_lexical_cast &e) {
 					std::ostringstream error_msg;
 					error_msg << "Error while parsing link '" << getParentLinkName(xml)
 							  << "': inertial mass [" << mass_xml->Attribute("value")
@@ -111,13 +111,13 @@ namespace urdf{
 				inertia_xml->Attribute("iyy") && inertia_xml->Attribute("iyz") &&
 				inertia_xml->Attribute("izz")) {
 				try {
-					i.ixx	= boost::lexical_cast<double>(inertia_xml->Attribute("ixx"));
-					i.ixy	= boost::lexical_cast<double>(inertia_xml->Attribute("ixy"));
-					i.ixz	= boost::lexical_cast<double>(inertia_xml->Attribute("ixz"));
-					i.iyy	= boost::lexical_cast<double>(inertia_xml->Attribute("iyy"));
-					i.iyz	= boost::lexical_cast<double>(inertia_xml->Attribute("iyz"));
-					i.izz	= boost::lexical_cast<double>(inertia_xml->Attribute("izz"));
-				} catch (boost::bad_lexical_cast &e) {
+					i.ixx	= nonboost::lexical_cast<double>(inertia_xml->Attribute("ixx"));
+					i.ixy	= nonboost::lexical_cast<double>(inertia_xml->Attribute("ixy"));
+					i.ixz	= nonboost::lexical_cast<double>(inertia_xml->Attribute("ixz"));
+					i.iyy	= nonboost::lexical_cast<double>(inertia_xml->Attribute("iyy"));
+					i.iyz	= nonboost::lexical_cast<double>(inertia_xml->Attribute("iyz"));
+					i.izz	= nonboost::lexical_cast<double>(inertia_xml->Attribute("izz"));
+				} catch (nonboost::bad_lexical_cast &e) {
 					std::ostringstream error_msg;
 					error_msg << "Error while parsing link '" << getParentLinkName(xml)
 							  << "Inertial: one of the inertia elements is not a valid double:"
