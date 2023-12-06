@@ -146,7 +146,6 @@ template <>
 inline double lexical_cast<double>(std::string str) try
 {
     double ret = std::stod(str);
-    std::cout << "cast " << str << " -> " << ret << std::endl;
     return ret;
 }
 catch(std::exception& e)
@@ -172,10 +171,8 @@ namespace algorithm
 
     // trim from both ends (in place)
     inline void trim(std::string &s) {
-        std::cout << "trim '" << s << "' -> ";
         rtrim(s);
         ltrim(s);
-        std::cout << "'" << s << "'" << std::endl;
     }
 }
 
